@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GProyectosEmpleados.Models;
 using GProyectosEmpleados.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GProyectosEmpleados.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmpleadosController : ControllerBase
     {
         private readonly DataContext _context;
@@ -27,27 +29,10 @@ namespace GProyectosEmpleados.Controllers
         {
             var empleados = _context.Empleados.ToList();
 
-            List<EmpleadoDTO> empleadosDTO = new List<EmpleadoDTO>();
-
-            foreach (var empDTO in empleados)
-            {
-                EmpleadoDTO empleadoDTO = new EmpleadoDTO();
-                empleadoDTO.NombreCompleto = empDTO.NombreCompleto;
-                empleadoDTO.CorreoElectronico = empDTO.CorreoElectronico;
-                empleadoDTO.FechaNacimiento = empDTO.FechaNacimiento;
-                empleadoDTO.NumeroTelefono = empDTO.NumeroTelefono;
-                empleadoDTO.DptoIdDpto = empDTO.DptoIdDpto;
-                empleadoDTO.FechaContratación = empDTO.FechaContratación;
-                empleadoDTO.Cargo = empDTO.Cargo;
-                empleadoDTO.Salario = empDTO.Salario;
-
-                empleadosDTO.Add(empleadoDTO);
-            }
-
             return StatusCode(StatusCodes.Status200OK, new
             {
                 message = "Listado de empleados.",
-                result = empleadosDTO
+                result = empleados
             });
         }
 
@@ -66,20 +51,10 @@ namespace GProyectosEmpleados.Controllers
                 });
             }
 
-            EmpleadoDTO empleadoDTO = new EmpleadoDTO();
-            empleadoDTO.NombreCompleto = empleado.NombreCompleto;
-            empleadoDTO.CorreoElectronico = empleado.CorreoElectronico;
-            empleadoDTO.FechaNacimiento = empleado.FechaNacimiento;
-            empleadoDTO.NumeroTelefono = empleado.NumeroTelefono;
-            empleadoDTO.DptoIdDpto = empleado.DptoIdDpto;
-            empleadoDTO.FechaContratación = empleado.FechaContratación;
-            empleadoDTO.Cargo = empleado.Cargo;
-            empleadoDTO.Salario = empleado.Salario;
-
             return StatusCode(StatusCodes.Status200OK, new
             {
                 message = "Empleado encontrado",
-                result = empleadoDTO
+                result = empleado
             });
         }
 

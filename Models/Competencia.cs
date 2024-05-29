@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GProyectosEmpleados.Models;
 
@@ -13,5 +14,6 @@ public partial class Competencia
 
     public int? EmpleadoIdEmpleado { get; set; }
 
+    [JsonIgnore]
     public virtual Empleado? EmpleadoIdEmpleadoNavigation { get; set; }
 }

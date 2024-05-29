@@ -3,11 +3,13 @@ using GProyectosEmpleados.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GProyectosEmpleados.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DepartamentoController : ControllerBase
     {
         private readonly DataContext _context;
@@ -23,23 +25,10 @@ namespace GProyectosEmpleados.Controllers
         {
             var departamentos = _context.Departamentos.ToList();
 
-            List<DepartamentoDTO> departamentosDTO = new List<DepartamentoDTO>();
-
-            foreach (var dptoDTO in departamentos)
-            {
-                DepartamentoDTO departamentoDTO = new DepartamentoDTO();
-                departamentoDTO.Nombre = dptoDTO.Nombre;
-                departamentoDTO.Descripcion = dptoDTO.Descripcion;
-
-
-
-                departamentosDTO.Add(departamentoDTO);
-            }
-
             return StatusCode(StatusCodes.Status200OK, new
             {
                 message = "Listado de departamentos.",
-                result = departamentosDTO
+                result = departamentos
             });
         }
 
@@ -58,14 +47,10 @@ namespace GProyectosEmpleados.Controllers
                 });
             }
 
-            DepartamentoDTO departamentoDTO = new DepartamentoDTO();
-            departamentoDTO.Nombre = departamento.Nombre;
-            departamentoDTO.Descripcion = departamento.Descripcion;
-
             return StatusCode(StatusCodes.Status200OK, new
             {
                 message = "Departamento encontrado",
-                result = departamentoDTO
+                result = departamento
             });
         }
 

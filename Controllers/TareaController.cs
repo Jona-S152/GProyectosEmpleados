@@ -3,6 +3,7 @@ using GProyectosEmpleados.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GProyectosEmpleados.Controllers
@@ -10,65 +11,65 @@ namespace GProyectosEmpleados.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ProyectoController : ControllerBase
+    public class TareaController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public ProyectoController(DataContext context)
+        public TareaController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/Proyecto
+        // GET: api/Roles
         [HttpGet]
-        public IActionResult GetProyectos()
+        public IActionResult GetTareas()
         {
-            var proyectos = _context.Proyectos.ToList();
+            var tareas = _context.Tareas.ToList();
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Listado de proyectos.",
-                result = proyectos
+                message = "Listado de tareas.",
+                result = tareas
             });
         }
 
         // GET: api/Proyectos/5
         [HttpGet("{id}")]
-        public IActionResult GetProyecto(int id)
+        public IActionResult GetRol(int id)
         {
-            var proyecto = _context.Proyectos.FirstOrDefault(e => e.IdProyecto == id);
+            var tarea = _context.Tareas.FirstOrDefault(e => e.IdTarea == id);
 
-            if (proyecto == null)
+            if (tarea == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new
                 {
-                    message = "Proyecto no encontrado",
+                    message = "Tarea no encontrada",
                     result = ""
                 });
             }
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto encontrado",
-                result = proyecto
+                message = "Tarea encontrada",
+                result = tarea
             });
         }
 
         // PUT: api/Competencias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult PutCompetencia(int id, [FromBody] ProyectoDTO proyectoDTO)
+        public IActionResult PutTarea(int id, [FromBody] TareaDTO tareaDTO)
         {
-            var proyecto = _context.Proyectos.FirstOrDefault(e => e.IdProyecto == id);
+            var tarea = _context.Tareas.FirstOrDefault(e => e.IdTarea == id);
 
             try
             {
-                if (proyecto != null)
+                if (tarea != null)
                 {
-                    proyecto.Nombre = proyectoDTO.Nombre;
-                    proyecto.FechaInicio = proyectoDTO.FechaInicio;
-                    proyecto.FechaFinalizacion = proyectoDTO.FechaFinalizacion;
-                    proyecto.DptoIdDpto = proyectoDTO.DptoIdDpto;
+                    tarea.Descripcion = tareaDTO.Descripcion;
+                    tarea.Estado = tareaDTO.Estado;
+                    tarea.EmpleadoIdEmpleado = tareaDTO.EmpleadoIdEmpleado;
+                    tarea.ProyectoIdProyecto = tareaDTO.ProyectoIdProyecto;
                 }
                 _context.SaveChanges();
 
@@ -85,7 +86,7 @@ namespace GProyectosEmpleados.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto actualizado",
+                message = "Tarea actualizada",
                 result = ""
             });
         }
@@ -93,17 +94,17 @@ namespace GProyectosEmpleados.Controllers
         // POST: api/Competencias
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public IActionResult PostProyecto(ProyectoDTO proyectoDTO)
+        public IActionResult PostTarea(TareaDTO tareaDTO)
         {
-            Proyecto proyecto = new Proyecto();
-            proyecto.Nombre = proyectoDTO.Nombre;
-            proyecto.FechaInicio = proyectoDTO.FechaInicio;
-            proyecto.FechaFinalizacion = proyectoDTO.FechaFinalizacion;
-            proyecto.DptoIdDpto = proyectoDTO.DptoIdDpto;
+            Tarea tarea = new Tarea();
+            tarea.Descripcion = tareaDTO.Descripcion;
+            tarea.Estado = tareaDTO.Estado;
+            tarea.EmpleadoIdEmpleado = tareaDTO.EmpleadoIdEmpleado;
+            tarea.ProyectoIdProyecto = tareaDTO.ProyectoIdProyecto;
 
             try
             {
-                _context.Proyectos.Add(proyecto);
+                _context.Tareas.Add(tarea);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -117,28 +118,28 @@ namespace GProyectosEmpleados.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto agregado.",
+                message = "Tarea agregada.",
                 result = ""
             });
         }
 
         // DELETE: api/Competencias/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteProyecto(int id)
+        public IActionResult DeleteTarea(int id)
         {
-            var proyecto = _context.Proyectos.FirstOrDefault(e => e.IdProyecto == id);
-            if (proyecto == null)
+            var tarea = _context.Tareas.FirstOrDefault(e => e.IdTarea == id);
+            if (tarea == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new
                 {
-                    message = "Proyecto no encontrada",
+                    message = "Tarea no encontrada",
                     result = ""
                 });
             }
 
             try
             {
-                _context.Proyectos.Remove(proyecto);
+                _context.Tareas.Remove(tarea);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -152,7 +153,7 @@ namespace GProyectosEmpleados.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto eliminada.",
+                message = "Tarea eliminada.",
                 result = ""
             });
         }

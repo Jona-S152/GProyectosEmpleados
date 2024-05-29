@@ -3,11 +3,13 @@ using GProyectosEmpleados.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GProyectosEmpleados.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CompetenciaController : ControllerBase
     {
         private readonly DataContext _context;
@@ -23,23 +25,10 @@ namespace GProyectosEmpleados.Controllers
         {
             var competencias = _context.Competencias.ToList();
 
-            List<CompetenciaDTO> competenciasDTO = new List<CompetenciaDTO>();
-
-            foreach (var dptoDTO in competencias)
-            {
-                CompetenciaDTO competenciaDTO = new CompetenciaDTO();
-                competenciaDTO.Nombre = dptoDTO.Nombre;
-                competenciaDTO.Descripcion = dptoDTO.Descripcion;
-                competenciaDTO.EmpleadoIdEmpleado = dptoDTO.EmpleadoIdEmpleado;
-
-
-                competenciasDTO.Add(competenciaDTO);
-            }
-
             return StatusCode(StatusCodes.Status200OK, new
             {
                 message = "Listado de Competencias.",
-                result = competenciasDTO
+                result = competencias
             });
         }
 
@@ -58,15 +47,10 @@ namespace GProyectosEmpleados.Controllers
                 });
             }
 
-            CompetenciaDTO competenciaDTO = new CompetenciaDTO();
-            competenciaDTO.Nombre = competencia.Nombre;
-            competenciaDTO.Descripcion = competencia.Descripcion;
-            competenciaDTO.EmpleadoIdEmpleado = competencia.EmpleadoIdEmpleado;
-
             return StatusCode(StatusCodes.Status200OK, new
             {
                 message = "Competencia encontrado",
-                result = competenciaDTO
+                result = competencia
             });
         }
 

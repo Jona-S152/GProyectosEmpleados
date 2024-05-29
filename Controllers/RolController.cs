@@ -10,65 +10,64 @@ namespace GProyectosEmpleados.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class ProyectoController : ControllerBase
+    public class RolController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public ProyectoController(DataContext context)
+        public RolController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/Proyecto
+        // GET: api/Roles
         [HttpGet]
-        public IActionResult GetProyectos()
+        public IActionResult GetRoles()
         {
-            var proyectos = _context.Proyectos.ToList();
+            var roles = _context.Rols.ToList();
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Listado de proyectos.",
-                result = proyectos
+                message = "Listado de roles.",
+                result = roles
             });
         }
 
         // GET: api/Proyectos/5
         [HttpGet("{id}")]
-        public IActionResult GetProyecto(int id)
+        public IActionResult GetRol(int id)
         {
-            var proyecto = _context.Proyectos.FirstOrDefault(e => e.IdProyecto == id);
+            var rol = _context.Rols.FirstOrDefault(e => e.IdRol == id);
 
-            if (proyecto == null)
+            if (rol == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new
                 {
-                    message = "Proyecto no encontrado",
+                    message = "Rol no encontrado",
                     result = ""
                 });
             }
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto encontrado",
-                result = proyecto
+                message = "Rol encontrado",
+                result = rol
             });
         }
 
         // PUT: api/Competencias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult PutCompetencia(int id, [FromBody] ProyectoDTO proyectoDTO)
+        public IActionResult PutRol(int id, [FromBody] RolDTO rolDTO)
         {
-            var proyecto = _context.Proyectos.FirstOrDefault(e => e.IdProyecto == id);
+            var rol = _context.Rols.FirstOrDefault(e => e.IdRol == id);
 
             try
             {
-                if (proyecto != null)
+                if (rol != null)
                 {
-                    proyecto.Nombre = proyectoDTO.Nombre;
-                    proyecto.FechaInicio = proyectoDTO.FechaInicio;
-                    proyecto.FechaFinalizacion = proyectoDTO.FechaFinalizacion;
-                    proyecto.DptoIdDpto = proyectoDTO.DptoIdDpto;
+                    rol.Nombre = rolDTO.Nombre;
+                    rol.Descripcion = rolDTO.Descripcion;
+                    rol.EmpleadoIdEmpleado = rolDTO.EmpleadoIdEmpleado;
                 }
                 _context.SaveChanges();
 
@@ -85,7 +84,7 @@ namespace GProyectosEmpleados.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto actualizado",
+                message = "Rol actualizado",
                 result = ""
             });
         }
@@ -93,17 +92,16 @@ namespace GProyectosEmpleados.Controllers
         // POST: api/Competencias
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public IActionResult PostProyecto(ProyectoDTO proyectoDTO)
+        public IActionResult PostRol(RolDTO rolDTO)
         {
-            Proyecto proyecto = new Proyecto();
-            proyecto.Nombre = proyectoDTO.Nombre;
-            proyecto.FechaInicio = proyectoDTO.FechaInicio;
-            proyecto.FechaFinalizacion = proyectoDTO.FechaFinalizacion;
-            proyecto.DptoIdDpto = proyectoDTO.DptoIdDpto;
+            Rol rol = new Rol();
+            rol.Nombre = rolDTO.Nombre;
+            rol.Descripcion = rolDTO.Descripcion;
+            rol.EmpleadoIdEmpleado = rolDTO.EmpleadoIdEmpleado;
 
             try
             {
-                _context.Proyectos.Add(proyecto);
+                _context.Rols.Add(rol);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -117,28 +115,28 @@ namespace GProyectosEmpleados.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto agregado.",
+                message = "Rol agregado.",
                 result = ""
             });
         }
 
         // DELETE: api/Competencias/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteProyecto(int id)
+        public IActionResult DeleteRol(int id)
         {
-            var proyecto = _context.Proyectos.FirstOrDefault(e => e.IdProyecto == id);
-            if (proyecto == null)
+            var rol = _context.Rols.FirstOrDefault(e => e.IdRol == id);
+            if (rol == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new
                 {
-                    message = "Proyecto no encontrada",
+                    message = "Rol no encontrado",
                     result = ""
                 });
             }
 
             try
             {
-                _context.Proyectos.Remove(proyecto);
+                _context.Rols.Remove(rol);
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -152,7 +150,7 @@ namespace GProyectosEmpleados.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new
             {
-                message = "Proyecto eliminada.",
+                message = "Rol eliminado.",
                 result = ""
             });
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GProyectosEmpleados.Models;
 
@@ -23,11 +24,15 @@ public partial class Empleado
 
     public decimal? Salario { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Competencia> Competencia { get; set; } = new List<Competencia>();
 
+    [JsonIgnore]
     public virtual Departamento? DptoIdDptoNavigation { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Rol> Rols { get; set; } = new List<Rol>();
 
+    [JsonIgnore]
     public virtual ICollection<Tarea> Tareas { get; set; } = new List<Tarea>();
 }
